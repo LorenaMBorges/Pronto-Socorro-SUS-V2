@@ -22,7 +22,7 @@ void heap_fix_down(HEAP_DINAMICA *heap);
 bool heap_enfileirar(HEAP_DINAMICA *heap, ITEM *item);
 ITEM* heap_desenfileirar(HEAP_DINAMICA *heap);
 
-void heap_printar(HEAP_DINAMICA *heap);
+void heap_printar(HEAP_DINAMICA *heap, AVL *dados_AVL);
 
 int heap_item_get_id(ITEM *item);
 int heap_item_get_prioridade(ITEM *item);
