@@ -114,10 +114,10 @@ void listar_pacientes(AVL *dados_AVL){
     printf("\nOpção 3 Escolhida: Vamos visualizar os pacientes cadastrados...\n");
     
     printf("Você deseja ver o histórico de procedimentos dos pacientes? [Y/N]");
-    scanf("%c", escolha);
+    scanf(" %c", &escolha);
 
     if(escolha == 'y' || escolha == 'Y'){
-        //impressao da estrutura de dados + procedimentos
+        avl_imprimir_com_historico(dados_AVL);
     }else{
         avl_imprimir(dados_AVL);
     }

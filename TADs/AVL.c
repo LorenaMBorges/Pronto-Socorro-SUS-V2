@@ -37,6 +37,9 @@ void avl_apagar_rec (NO *raiz) {
     if (raiz != NULL) {
         avl_apagar_rec(raiz->fesq);
         avl_apagar_rec(raiz->fdir);
+
+        historico_apagar(&raiz->historico);
+
         free(raiz);
     }
 }
@@ -118,6 +121,7 @@ NO *avl_cria_no (char *NOME, unsigned int ID) {
 
         novo_no->ID = ID;
         strcpy(novo_no->nome, NOME);
+        novo_no->esta_na_fila = false;
     }
 
     return novo_no;
@@ -177,6 +181,7 @@ NO *avl_remover_rec (NO *raiz, unsigned int ID) {
             else
                 raiz = raiz->fesq;
 
+            historico_apagar(&aux->historico);
             free(aux);
             aux = NULL;
         }
@@ -184,8 +189,14 @@ NO *avl_remover_rec (NO *raiz, unsigned int ID) {
         else {
             NO *nova_raiz = avl_encontrar_max(raiz->fesq);
 
+            historico_apagar(&raiz->historico);
+
             raiz->ID = nova_raiz->ID;
             strcpy(raiz->nome, nova_raiz->nome);
+            raiz->esta_na_fila = nova_raiz->esta_na_fila;
+
+            raiz->historico = nova_raiz->historico;
+            nova_raiz->historico = NULL;
 
             raiz->fesq = avl_remover_rec(raiz->fesq, nova_raiz->ID);
         }
@@ -230,8 +241,10 @@ bool avl_remover_no (AVL *T, unsigned int ID) {
 void avl_imprimir_2 (NO* raiz) {
     if (raiz != NULL) {
         avl_imprimir_2(raiz->fesq);
+
         printf("\nPaciente de ID %u:\n", raiz->ID);
         printf("Nome: %s\n", raiz->nome);
+        
         avl_imprimir_2(raiz->fdir);
     }
 }
@@ -239,6 +252,23 @@ void avl_imprimir_2 (NO* raiz) {
 // Adapta a enterada de AVL para raiz.
 void avl_imprimir(AVL* arvore) {
     avl_imprimir_2(arvore->raiz);
+}
+
+void avl_imprimir_com_historico_2(NO* raiz){
+    if(raiz != NULL){
+        avl_imprimir_com_historico_2(raiz->fesq);
+
+        printf("\nPaciente de ID %u:\n", raiz->ID);
+        printf("Nome: %s\n", raiz->nome);
+
+        avl_imprimir_historico(raiz);
+
+        avl_imprimir_com_historico_2(raiz->fdir);
+    }
+}
+
+void avl_imprimir_com_historico(AVL* arvore){
+    avl_imprimir_com_historico_2(arvore->raiz);
 }
 
 // Procura nó de mesmo ID recursivamente. Caso encontre, devolve um ponteiro para esse nó, caso contrário, devolve NULL.

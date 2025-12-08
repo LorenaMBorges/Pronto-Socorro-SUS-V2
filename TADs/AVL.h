@@ -17,6 +17,7 @@ void avl_apagar (AVL **arvore);
 bool avl_inserir_no (AVL *arvore, char *NOME, unsigned int ID);
 bool avl_remover_no (AVL *T, unsigned int ID);
 void avl_imprimir (AVL* arvore);
+void avl_imprimir_com_historico(AVL* arvore);
 bool avl_ID_disponivel (NO *raiz, unsigned int ID);
 NO* avl_acha_ID (AVL *arvore, unsigned int ID);
 char *obter_copia_nome_paciente (NO* no);
