@@ -13,6 +13,7 @@ Sofia Albuquerque Lima, nUSP: 16900810
 
 #include "./TADs/AVL.h"
 #include "./TADs/filaPrioridade.h"
+#include "./TADs/IO.h"
 
 int contador_global = 0;
 
