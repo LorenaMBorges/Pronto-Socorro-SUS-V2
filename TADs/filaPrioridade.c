@@ -13,7 +13,7 @@ struct heap_dinamica{ //arranjo para implementação, seu tamanho real e capacid
     int capacidade;
 };
 
-HEAP_DINAMICA *heap_criar(){
+HEAP_DINAMICA *heap_criar(){ //Heap mínima: nó >= pai(nó)
     HEAP_DINAMICA *heap = (HEAP_DINAMICA*) malloc(sizeof(HEAP_DINAMICA));
     if(heap != NULL){
         heap->capacidade = 32;
@@ -23,7 +23,7 @@ HEAP_DINAMICA *heap_criar(){
     return heap;
 }
 
-ITEM* item_criar(int id, int prioridade, int ordem){
+ITEM* item_criar(unsigned int id, unsigned int prioridade, unsigned int ordem){
     ITEM *item = malloc(sizeof(ITEM));
     if(item != NULL){
         item->id = id;
@@ -47,7 +47,7 @@ bool heap_vazia(HEAP_DINAMICA *heap){
     return false;
 }
 
-void heap_aumentar(HEAP_DINAMICA *heap){
+void heap_aumentar(HEAP_DINAMICA *heap){ //Com a heap dinamica, quando houver problema de capacidade, é só aumentá-la
     int nova_capacidade = heap->capacidade * 2;
 
     ITEM **novo = realloc(
@@ -71,7 +71,7 @@ void heap_swap(HEAP_DINAMICA *heap, int i, int j){
     heap->arranjo[j] = tmp;
 }
 
-void heap_fix_up(HEAP_DINAMICA *heap){ 
+void heap_fix_up(HEAP_DINAMICA *heap){ //A chave para manter a ordem será ITEM->prioridade
     int i = heap->tamanho - 1;
 
     while(i > 0){
@@ -139,7 +139,7 @@ void heap_fix_down(HEAP_DINAMICA *heap){
     }
 }
 
-bool heap_enfileirar(HEAP_DINAMICA *heap, ITEM *item){
+bool heap_enfileirar(HEAP_DINAMICA *heap, ITEM *item){ //Adicionar paciente na fila de atendimento
     if(heap_cheia(heap)){
         heap_aumentar(heap);
     }
@@ -150,7 +150,7 @@ bool heap_enfileirar(HEAP_DINAMICA *heap, ITEM *item){
     return true;
 }
 
-ITEM* heap_desenfileirar(HEAP_DINAMICA *heap){
+ITEM* heap_desenfileirar(HEAP_DINAMICA *heap){ //Paciente foi atendido
     if(heap_vazia(heap)){
         return NULL;
     }
@@ -195,4 +195,16 @@ void heap_printar(HEAP_DINAMICA *heap){ // cria cópia da heap para printar a re
     }
 
     free(copia.arranjo);
+}
+
+int heap_item_get_id(ITEM *item){
+    return item->id;
+}
+
+int heap_item_get_prioridade(ITEM *item){
+    return item->prioridade;
+}
+
+int heap_item_get_ordem(ITEM *item){
+    return item->ordem_chegada;
 }
