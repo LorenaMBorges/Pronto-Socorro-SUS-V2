@@ -208,3 +208,28 @@ int heap_item_get_prioridade(ITEM *item){
 int heap_item_get_ordem(ITEM *item){
     return item->ordem_chegada;
 }
+
+int heap_tamanho(HEAP_DINAMICA *heap) {
+    if (heap == NULL) return 0;
+    return heap->tamanho;
+}
+
+void heap_apagar(HEAP_DINAMICA **heap_ref) {
+    if (heap_ref == NULL || *heap_ref == NULL) return;
+
+    HEAP_DINAMICA *heap = *heap_ref;
+
+    // libera cada ITEM
+    for (int i = 0; i < heap->tamanho; i++) {
+        if (heap->arranjo[i] != NULL) {
+            free(heap->arranjo[i]);
+        }
+    }
+
+    // libera o vetor de ponteiros e a própria heap
+    free(heap->arranjo);
+    free(heap);
+
+    *heap_ref = NULL;
+}
+

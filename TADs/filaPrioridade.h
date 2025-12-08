@@ -28,3 +28,6 @@ int heap_item_get_id(ITEM *item);
 int heap_item_get_prioridade(ITEM *item);
 int heap_item_get_ordem(ITEM *item);
 
+int heap_tamanho(HEAP_DINAMICA *heap);
+void heap_apagar(HEAP_DINAMICA **heap);
+
