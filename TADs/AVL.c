@@ -6,7 +6,9 @@ struct no {
     // informações do paciente
     char nome[TAM_NOME];
     unsigned int ID;
+    
     bool esta_na_fila;
+    HISTORICO *historico; 
 
     // informações gerais de nós
     NO *fesq;
@@ -109,6 +111,7 @@ NO *avl_cria_no (char *NOME, unsigned int ID) {
     NO *novo_no = (NO*) malloc(sizeof(NO));
 
     if (novo_no != NULL) {
+        novo_no->historico = historico_criar();
         novo_no->altura = 0;
         novo_no->fdir = NULL;
         novo_no->fesq = NULL;
@@ -299,4 +302,21 @@ bool avl_obter_esta_na_fila_no(NO* no){
         return no->esta_na_fila;
     }
     return false;
+}
+
+bool avl_registrar_procedimento(NO *paciente, const char *descricao){
+    if(paciente == NULL || descricao == NULL) return false;
+
+    PROCEDIMENTO *p = procedimento_criar(descricao);
+    if(p == NULL) return false;
+
+    return inserir_procedimento(paciente->historico, p);
+}
+
+void avl_imprimir_historico(NO *paciente){
+    if(paciente == NULL){
+        printf("Paciente inexistente.\n");
+        return;
+    }
+    historico_consultar(paciente->historico);
 }

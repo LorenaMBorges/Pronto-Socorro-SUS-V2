@@ -7,6 +7,8 @@
 #include <stdbool.h>
 #include <string.h>
 
+#include "historico.h"
+
 typedef struct avl AVL;
 typedef struct no NO;
 
@@ -22,3 +24,6 @@ void destruir_copia_nome_paciente (char **copia);
 
 void avl_set_esta_na_fila(NO *paciente, bool estado);
 bool avl_obter_esta_na_fila_no(NO* no);
+
+bool avl_registrar_procedimento(NO *paciente, const char *descricao);
+void avl_imprimir_historico(NO *paciente);
