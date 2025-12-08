@@ -288,6 +288,15 @@ void destruir_copia_nome_paciente (char **copia) {
     }
 }
 
+void avl_set_esta_na_fila(NO *paciente, bool estado){
+    if(paciente != NULL){
+        paciente->esta_na_fila = estado;
+    }
+}
+
 bool avl_obter_esta_na_fila_no(NO* no){
-    return no->esta_na_fila;
+    if(no != NULL){
+        return no->esta_na_fila;
+    }
+    return false;
 }
