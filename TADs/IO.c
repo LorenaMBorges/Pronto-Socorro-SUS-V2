@@ -8,8 +8,6 @@
 #include "historico.h"
 #include "filaPrioridade.h"
 
-// ============ auxiliares de string binária (iguais ao projeto 1) ============
-
 static bool salvar_string(FILE* arquivo, const char* texto) {
     int tamanho = 0;
     if (texto != NULL) {
@@ -60,8 +58,6 @@ static bool carregar_string(FILE* arquivo, char** texto) {
 
     return true;
 }
-
-// ======================= SALVAR PACIENTES (AVL) ============================
 
 typedef struct {
     FILE *arquivo;
@@ -115,8 +111,6 @@ static void salvar_no_callback(NO *no, void *ctx_void) {
     }
 }
 
-// ============================= SAVE ========================================
-
 bool SAVE(AVL *dados_AVL, HEAP_DINAMICA *heap, int contador_global) {
     FILE* arquivo = fopen("hospital_data.bin", "wb");
     if (arquivo == NULL) {
@@ -124,7 +118,7 @@ bool SAVE(AVL *dados_AVL, HEAP_DINAMICA *heap, int contador_global) {
         return false;
     }
 
-    // 1) número de pacientes da AVL
+    // número de pacientes da AVL
     int n_pacientes = 0;
     if (dados_AVL != NULL) {
         n_pacientes = avl_contar_nos(dados_AVL);
@@ -136,7 +130,7 @@ bool SAVE(AVL *dados_AVL, HEAP_DINAMICA *heap, int contador_global) {
         return false;
     }
 
-    // 2) salvar cada paciente (ID, nome, histórico)
+    // salvar cada paciente (ID, nome, histórico)
     if (dados_AVL != NULL && n_pacientes > 0) {
         IOContextAVL ctx = { .arquivo = arquivo, .erro = false };
         avl_percorrer_em_ordem(dados_AVL, salvar_no_callback, &ctx);
@@ -146,13 +140,13 @@ bool SAVE(AVL *dados_AVL, HEAP_DINAMICA *heap, int contador_global) {
         }
     }
 
-    // 3) salvar contador_global (para ordem de chegada futura)
+    // salvar contador_global (para ordem de chegada futura)
     if (fwrite(&contador_global, sizeof(int), 1, arquivo) != 1) {
         fclose(arquivo);
         return false;
     }
 
-    // 4) salvar heap (fila de prioridade)
+    // salvar heap (fila de prioridade)
     int total_heap = 0;
     if (heap != NULL) {
         total_heap = heap_tamanho(heap);
@@ -201,8 +195,6 @@ bool SAVE(AVL *dados_AVL, HEAP_DINAMICA *heap, int contador_global) {
     return true;
 }
 
-// ============================= LOAD ========================================
-
 bool LOAD(AVL **dados_AVL, HEAP_DINAMICA **heap, int *contador_global) {
     if (dados_AVL == NULL || heap == NULL || contador_global == NULL) {
         return false;
@@ -241,7 +233,7 @@ bool LOAD(AVL **dados_AVL, HEAP_DINAMICA **heap, int *contador_global) {
         return false;
     }
 
-    // 1) carregar pacientes na AVL
+    // carregar pacientes na AVL
     for (int i = 0; i < n_pacientes; i++) {
         unsigned int id = 0;
         if (fread(&id, sizeof(unsigned int), 1, arquivo) != 1) {
@@ -298,11 +290,11 @@ bool LOAD(AVL **dados_AVL, HEAP_DINAMICA **heap, int *contador_global) {
             free(desc_lida);
         }
 
-        // por enquanto, marca fora da fila; a heap vai ajustar depois
+        // por enquanto, marca fora da fila... Heap vai ajustar depois
         avl_set_esta_na_fila(paciente, false);
     }
 
-    // 2) carregar contador_global
+    // carregar contador_global
     int contador_lido = 0;
     if (fread(&contador_lido, sizeof(int), 1, arquivo) != 1) {
         avl_apagar(&nova_arvore);
@@ -310,7 +302,7 @@ bool LOAD(AVL **dados_AVL, HEAP_DINAMICA **heap, int *contador_global) {
         return false;
     }
 
-    // 3) carregar heap
+    // carregar heap
     int total_heap = 0;
     if (fread(&total_heap, sizeof(int), 1, arquivo) != 1 || total_heap < 0) {
         avl_apagar(&nova_arvore);

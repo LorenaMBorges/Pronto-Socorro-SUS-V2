@@ -29,6 +29,7 @@ bool avl_obter_esta_na_fila_no(NO* no);
 bool avl_registrar_procedimento(NO *paciente, const char *descricao);
 void avl_imprimir_historico(NO *paciente);
 
+// Usados no IO
 // percorre a árvore em-ordem e chama callback para cada nó
 void avl_percorrer_em_ordem(AVL *arvore, void (*callback)(NO *no, void *ctx), void *ctx);
 

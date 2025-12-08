@@ -190,10 +190,15 @@ void heap_printar(HEAP_DINAMICA *heap, AVL *dados_AVL){ // cria cópia da heap p
         NO *paciente = avl_acha_ID(dados_AVL, p->id);
         char *nome = paciente ? obter_copia_nome_paciente(paciente) : "Desconhecido";
 
-        printf("%d | %s\n",
-            p->prioridade,
-            nome
-        );
+        switch(p->prioridade){
+            case 1: printf("Emergencia - %s\n", nome);        break;
+            case 2: printf("Muito Urgente - %s\n", nome);     break;
+            case 3: printf("Urgente - %s\n", nome);           break;
+            case 4: printf("Pouco Urgente - %s\n", nome);     break;
+            case 5: printf("Nao Urgente - %s\n", nome);       break;
+            default:                                          break;
+        }
+
         if(paciente) destruir_copia_nome_paciente(&nome);
     }
 

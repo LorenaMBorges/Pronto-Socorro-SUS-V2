@@ -3,7 +3,7 @@
 
 #include <stdbool.h>
 #include "AVL.h"
-#include "filaPrioridade.h"   // ou "Heap.h", conforme o nome real
+#include "filaPrioridade.h"
 
 // SAVE: salva AVL + Heap + histórico em "hospital_data.bin"
 bool SAVE(AVL *dados_AVL, HEAP_DINAMICA *heap, int contador_global);
