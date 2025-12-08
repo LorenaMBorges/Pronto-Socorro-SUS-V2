@@ -208,6 +208,28 @@ void dar_alta_ao_paciente(AVL *dados_AVL, HEAP_DINAMICA *heap){
         printf("ID: %d\n", id);
 
         destruir_copia_nome_paciente(&nome);
+
+        char opcao;
+        printf("\nDeseja registrar um procedimento no historico desse paciente? [Y/N] ");
+        scanf(" %c", &opcao);
+
+        if (opcao == 'y' || opcao == 'Y') {
+            char descricao[MAX_DESCRICAO];
+            printf("Digite a descricao do procedimento: ");
+            if (scanf(" %100[^\n]", descricao) != 1) { // garantir leitura adequada
+                printf("Entrada invalida.\n");
+                return;
+            }
+
+            int c;
+            while ((c = getchar()) != '\n' && c != EOF); // limpar buffer
+
+            if (!avl_registrar_procedimento(paciente, descricao)) {
+                printf("Nao foi possivel registrar o procedimento (historico cheio ou erro).\n");
+            } else {
+                printf("Procedimento registrado no historico.\n");
+            }
+        }
     }
     else{
         printf("Paciente com id %d nao encontrado no cadastro.\n", id);
