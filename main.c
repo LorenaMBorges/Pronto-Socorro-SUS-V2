@@ -68,6 +68,20 @@ void registrar_paciente(AVL *dados_AVL, HEAP_DINAMICA *heap){
     printf("Digite o ID: ");
     scanf("%u", &id);
 
+    if (avl_ID_disponivel(dados_AVL, id)) {
+        printf("\nPaciente ainda não registrado.\n");
+
+        printf("Digite o nome: ");
+        char nome[TAM_NOME];
+        scanf(" %s", nome);
+
+        if(avl_inserir_no(dados_AVL, nome, id))
+            printf("\n\nPaciente inserido no registro.\n");
+    }
+    else {
+        printf("\nID ja utilizado, paciente ja registrado.\n");
+    }
+
     printf("Digite a prioridade (1-5): ");
     scanf("%u", &prioridade);
     
