@@ -1,7 +1,7 @@
 /* TRABALHO 2 DA DISCIPLINA DE ALGORITMOS E ESTRUTURAS DE DADOS
 
 Alunos:
-João Pedro Boaretto, nUSP:  16876293
+Joao Pedro Boaretto, nUSP:  16876293
 Lorena Moreira Borges, nUSP: 16883652
 Sofia Albuquerque Lima, nUSP: 16900810
 
@@ -28,9 +28,9 @@ int main(){
     int escolha_menu; 
     int rodando = 1;
     HEAP_DINAMICA *heap = heap_criar();
-    // precisa carregar os dados. Acho que seria interessante a fila vir dos dados também, e não criar uma fila nova.
+    // precisa carregar os dados. Acho que seria interessante a fila vir dos dados também, e nao criar uma fila nova.
     // chamei o ponteiro para a AVL de dados_AVL:
-    AVL *dados_AVL;
+    AVL *dados_AVL = avl_criar();
 
     printf("\nBem vindo Sistema do SUS!\n");
 
@@ -66,19 +66,19 @@ void registrar_paciente(AVL *dados_AVL, HEAP_DINAMICA *heap){
     printf("\nOpcao 1 Escolhida: Vamos registrar um paciente...\n");
     
     printf("Digite o ID: ");
-    scanf("%u", &id);
+    scanf(" %u", &id);
 
     if (avl_ID_disponivel(dados_AVL, id)) {
-        printf("\nPaciente ainda não registrado.\n");
+        printf("\nPaciente ainda nao registrado.\n");
 
         printf("Digite o nome: ");
         char nome[TAM_NOME];
         scanf(" %s", nome);
 
         if(avl_inserir_no(dados_AVL, nome, id))
-            printf("\n\nPaciente inserido no registro.\n");
+            printf("\nPaciente inserido no registro.\n");
         else {
-            printf("\n\nErro de registro do paciente. Tente novamente.\n");
+            printf("\nErro de registro do paciente. Tente novamente.\n");
             return;
         }
     }
@@ -86,12 +86,12 @@ void registrar_paciente(AVL *dados_AVL, HEAP_DINAMICA *heap){
         printf("\nID ja utilizado, paciente ja registrado.\n");
     }
 
-    printf("Digite a prioridade (1-5): ");
-    scanf("%u", &prioridade);
-
     NO *add_fila = avl_acha_ID(dados_AVL, id);
 
-    if(avl_obter_esta_na_fila_no(add_fila)){
+    if(!avl_obter_esta_na_fila_no(add_fila)){
+        printf("Digite a prioridade (1-5): ");
+        scanf(" %u", &prioridade);
+        
         ITEM *item = item_criar(id, prioridade, contador_global++);
         heap_enfileirar(heap, item);
         avl_set_esta_na_fila(avl_acha_ID(dados_AVL, id), true);
@@ -114,7 +114,7 @@ void remover_paciente(AVL *dados_AVL){
 
     bool esta_na_fila = avl_obter_esta_na_fila_no(avl_acha_ID(dados_AVL, id));
 
-    if (esta_na_fila) {
+    if (!esta_na_fila) {
         if(avl_remover_no(dados_AVL, id)) {
             printf("\nRemocao bem-sucedida.\n");
         }
