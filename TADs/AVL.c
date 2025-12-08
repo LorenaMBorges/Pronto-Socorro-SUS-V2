@@ -223,25 +223,36 @@ NO *avl_encontrar_max(NO *subesquerda) {
 }
 
 // Imprime todos os nós da árvore em ordem pelos IDs.
-void avl_imprimir (NO* raiz) {
-    if (raiz == NULL) {
-        return;
-    }
+void avl_imprimir (AVL* arvore) {
+    if (arvore != NULL) {
+        NO* raiz = arvore->raiz;
+        if (raiz == NULL) {
+            return;
+        }
 
-    avl_imprimir(raiz->fesq);
-    printf("\nPaciente de ID %u:\n", raiz->ID);
-    printf("Nome: %s\n", raiz->nome);
-    avl_imprimir(raiz->fdir);
+        avl_imprimir(raiz->fesq);
+        printf("\nPaciente de ID %u:\n", raiz->ID);
+        printf("Nome: %s\n", raiz->nome);
+        avl_imprimir(raiz->fdir);
+    }
 }
 
 // Devolve se um ID está disponível para uso. Caso ele já exista, não está, caso contrário, pode ser adotado, estão está disponível.
 bool avl_ID_disponivel (NO *raiz, unsigned int ID) {
-    return ((avl_acha_ID(raiz, ID)) == NULL);
+    return ((avl_acha_ID_rec(raiz, ID)) == NULL);
+}
+
+// Chama função de busca.
+// Pode ser utilizado para buscar um paciente no banco de dados.
+NO* avl_acha_ID (AVL *arvore, unsigned int ID) {
+    if (arvore != NULL)
+        return(avl_acha_ID_rec(arvore->raiz, ID));
+    
+    return NULL;
 }
 
 // Procura nó de mesmo ID recursivamente. Caso encontre, devolve um ponteiro para esse nó, caso contrário, devolve NULL.
-// Pode ser utilizado para buscar um paciente no banco de dados.
-NO* avl_acha_ID (NO *raiz, unsigned int ID) {
+NO* avl_acha_ID_rec (NO *raiz, unsigned int ID) {
     if (raiz != NULL) {
         if (raiz->ID == ID) {
             return raiz;
