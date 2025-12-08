@@ -77,6 +77,10 @@ void registrar_paciente(AVL *dados_AVL, HEAP_DINAMICA *heap){
 
         if(avl_inserir_no(dados_AVL, nome, id))
             printf("\n\nPaciente inserido no registro.\n");
+        else {
+            printf("\n\nErro de registro do paciente. Tente novamente.\n");
+            return;
+        }
     }
     else {
         printf("\nID ja utilizado, paciente ja registrado.\n");
@@ -84,10 +88,10 @@ void registrar_paciente(AVL *dados_AVL, HEAP_DINAMICA *heap){
 
     printf("Digite a prioridade (1-5): ");
     scanf("%u", &prioridade);
-    
-    // precisa adicionar paciente na AVL + verificação se o paciente ja existe
 
-    if(avl_obter_esta_na_fila_no){
+    NO *add_fila = avl_acha_ID(dados_AVL, id);
+
+    if(avl_obter_esta_na_fila_no(add_fila)){
         ITEM *item = item_criar(id, prioridade, contador_global++);
         heap_enfileirar(heap, item);
         avl_set_esta_na_fila(avl_acha_ID(dados_AVL, id), true);
