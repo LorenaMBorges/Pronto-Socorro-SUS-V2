@@ -22,7 +22,7 @@ void listar_pacientes(AVL *dados_AVL);
 void buscar_paciente_por_id(AVL *dados_AVL);
 void mostrar_fila_de_espera(HEAP_DINAMICA *heap);
 void dar_alta_ao_paciente(AVL *dados_AVL, HEAP_DINAMICA *heap);
-int sair(int rodando);
+int sair(void);
 
 int main(){
     int escolha_menu; 
@@ -54,7 +54,7 @@ int main(){
         case 4: buscar_paciente_por_id(dados_AVL);      break;
         case 5: mostrar_fila_de_espera(heap);           break;
         case 6: dar_alta_ao_paciente(dados_AVL, heap);  break;
-        case 7: rodando = sair(rodando);                break;
+        case 7: rodando = sair();                       break;
         default: break;
         }
     }
@@ -206,8 +206,7 @@ void dar_alta_ao_paciente(AVL *dados_AVL, HEAP_DINAMICA *heap){
     return;
 }
 
-int sair(int rodando){
+int sair(void){
     printf("\nSistema fechando...\n");
-    rodando = 0;
-    return rodando;
+    return 0;
 }

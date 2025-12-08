@@ -350,3 +350,34 @@ void avl_imprimir_historico(NO *paciente){
     }
     historico_consultar(paciente->historico);
 }
+
+static void percurso_em_ordem_rec(NO *no, void (*callback)(NO*, void*), void *ctx) {
+    if (no == NULL) return;
+    percurso_em_ordem_rec(no->fesq, callback, ctx);
+    callback(no, ctx);
+    percurso_em_ordem_rec(no->fdir, callback, ctx);
+}
+
+void avl_percorrer_em_ordem(AVL *arvore, void (*callback)(NO*, void*), void *ctx) {
+    if (arvore == NULL || callback == NULL) return;
+    percurso_em_ordem_rec(arvore->raiz, callback, ctx);
+}
+
+static int avl_contar_nos_rec(NO *no) {
+    if (no == NULL) return 0;
+    return 1 + avl_contar_nos_rec(no->fesq) + avl_contar_nos_rec(no->fdir);
+}
+
+int avl_contar_nos(AVL *arvore) {
+    if (arvore == NULL) return 0;
+    return avl_contar_nos_rec(arvore->raiz);
+}
+
+unsigned int avl_obter_ID_no(NO *no) {
+    return no ? no->ID : 0;
+}
+
+HISTORICO* avl_obter_historico_no(NO *no) {
+    return no ? no->historico : NULL;
+}
+
