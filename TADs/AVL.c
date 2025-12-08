@@ -38,7 +38,7 @@ void avl_apagar_rec (NO *raiz) {
         avl_apagar_rec(raiz->fesq);
         avl_apagar_rec(raiz->fdir);
 
-        historico_apagar(&raiz->historico);
+        historico_apagar(&(raiz->historico));
 
         free(raiz);
     }
