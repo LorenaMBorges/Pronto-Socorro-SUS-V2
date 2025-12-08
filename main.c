@@ -84,16 +84,17 @@ void registrar_paciente(AVL *dados_AVL, HEAP_DINAMICA *heap){
     printf("Digite a prioridade (1-5): ");
     scanf("%u", &prioridade);
     
-    // precisa adicionar paciente na AVL + verificação se o paciente já existe + se já está na fila
-    if (avl_ID_disponivel(dados_AVL, ID)) {
-        printf("ID já utilizado");
-        return;
-    }
-    
-    ITEM *item = item_criar(id, prioridade, contador_global++);
+    // precisa adicionar paciente na AVL + verificação se o paciente já existe
 
-    heap_enfileirar(heap, item);    
-    avl_set_esta_na_fila(avl_acha_ID(dados_AVL, id), true);
+    if(!avl_obter_esta_na_fila_no){
+        ITEM *item = item_criar(id, prioridade, contador_global++);
+        heap_enfileirar(heap, item);
+        avl_set_esta_na_fila(avl_acha_ID(dados_AVL, id), true);
+
+        printf("\nPaciente adicionado na fila com sucesso!\n");
+    }else{
+        printf("\nPaciente já está na fila!\n");
+    }
 
     return;
 }
@@ -127,10 +128,10 @@ void listar_pacientes(AVL *dados_AVL){
     printf("\nOpção 3 Escolhida: Vamos visualizar os pacientes cadastrados...\n");
     
     printf("Você deseja ver o histórico de procedimentos dos pacientes? [Y/N]");
-    scanf("%c", escolha);
+    scanf(" %c", &escolha);
 
     if(escolha == 'y' || escolha == 'Y'){
-        //impressao da estrutura de dados + procedimentos
+        avl_imprimir_com_historico(dados_AVL);
     }else{
         avl_imprimir(dados_AVL);
     }
