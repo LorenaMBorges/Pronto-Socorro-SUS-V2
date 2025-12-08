@@ -6,6 +6,7 @@ struct no {
     // informações do paciente
     char nome[TAM_NOME];
     unsigned int ID;
+    bool esta_na_fila;
 
     // informações gerais de nós
     NO *fesq;
@@ -285,4 +286,8 @@ void destruir_copia_nome_paciente (char **copia) {
         free(*copia);
         *copia = NULL;
     }
+}
+
+bool avl_obter_esta_na_fila_no(NO* no){
+    return no->esta_na_fila;
 }

@@ -1,7 +1,16 @@
-// codigo principal do Pronto Socorro SUS V2
+/* TRABALHO 2 DA DISCIPLINA DE ALGORITMOS E ESTRUTURAS DE DADOS
+
+Alunos:
+João Pedro Boaretto, nUSP:  16876293
+Lorena Moreira Borges, nUSP: 16883652
+Sofia Albuquerque Lima, nUSP: 16900810
+
+*/
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <stdbool.h>
+
 #include "./TADs/AVL.h"
 #include "./TADs/filaPrioridade.h"
 
@@ -40,13 +49,12 @@ int main(){
         switch (escolha_menu) {
         case 1: registrar_paciente(dados_AVL, heap);    break;
         case 2: remover_paciente(dados_AVL);            break;
-        case 3: avl_imprimir(dados_AVL);                break;
+        case 3: listar_pacientes(dados_AVL);            break;
         case 4: buscar_paciente_por_id(dados_AVL);      break;
-        case 5: heap_printar(heap);                     break;
+        case 5: mostrar_fila_de_espera(heap);           break;
         case 6: dar_alta_ao_paciente(dados_AVL, heap);  break;
         case 7: sair();                                 break;
-        default: 
-            break;
+        default: break;
         }
     }
 }
@@ -54,7 +62,7 @@ int main(){
 void registrar_paciente(AVL *dados_AVL, HEAP_DINAMICA *heap){
     unsigned int id, prioridade;
 
-    printf("\nOpção 1 Escolhida: Vamos registrar um paciente\n");
+    printf("\nOpção 1 Escolhida: Vamos registrar um paciente...\n");
     
     printf("Digite o ID: ");
     scanf("%u", &id);
@@ -75,13 +83,15 @@ void registrar_paciente(AVL *dados_AVL, HEAP_DINAMICA *heap){
 void remover_paciente(AVL *dados_AVL){
     unsigned int id;
     
-    printf("\nOpção 2 Escolhida: Vamos remover um paciente dos registros\n");
+    printf("\nOpção 2 Escolhida: Vamos remover um paciente dos registros...\n");
 
     printf("Digite o ID: ");
     scanf("%u", &id);
 
-    if (/*função de verificação para saber se a pessoa está na fila de espera ou não*/) {
-        if(avl_remover_no (dados_AVL, id)) {
+    bool esta_na_fila = avl_obter_esta_na_fila_no(avl_acha_ID(dados_AVL, id));
+
+    if (esta_na_fila) {
+        if(avl_remover_no(dados_AVL, id)) {
             printf("\nRemocao bem-sucedida.\n");
         }
         else 
@@ -94,14 +104,26 @@ void remover_paciente(AVL *dados_AVL){
 }
 
 void listar_pacientes(AVL *dados_AVL){
-    avl_imprimir(dados_AVL);
+    char escolha;
+
+    printf("\nOpção 3 Escolhida: Vamos visualizar os pacientes cadastrados...\n");
+    
+    printf("Você deseja ver o histórico de procedimentos dos pacientes? [Y/N]");
+    scanf("%c", &escolha);
+
+    if(escolha == "y" || escolha == "Y"){
+        //impressao da estrutura de dados + procedimentos
+    }else{
+        avl_imprimir(dados_AVL);
+    }
+
     return;
 }
 
 void buscar_paciente_por_id(AVL *dados_AVL){
     unsigned int id;
 
-    printf("\nOpção 4 Escolhida: Vamos buscar um paciente pelo ID\n");
+    printf("\nOpção 4 Escolhida: Vamos buscar um paciente pelo ID...\n");
 
     printf("Digite o ID: ");
     scanf("%u", &id);
@@ -122,11 +144,14 @@ void buscar_paciente_por_id(AVL *dados_AVL){
 }
 
 void mostrar_fila_de_espera(HEAP_DINAMICA *heap){
+    printf("\nOpção 5 Escolhida: Vamos visualizar a fila de espera...\n");
     heap_printar(heap);
     return;
 }
 
 void dar_alta_ao_paciente(AVL *dados_AVL, HEAP_DINAMICA *heap){
+    printf("\nOpção 6 Escolhida: Vamos visualizar a fila de espera...\n");
+
     if(heap_vazia(heap)){
         printf("\nNao ha pacientes na fila.\n");
         return;
