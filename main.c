@@ -21,7 +21,7 @@ void registrar_paciente(AVL *dados_AVL, HEAP_DINAMICA *heap);
 void remover_paciente(AVL *dados_AVL);
 void listar_pacientes(AVL *dados_AVL);
 void buscar_paciente_por_id(AVL *dados_AVL);
-void mostrar_fila_de_espera(HEAP_DINAMICA *heap);
+void mostrar_fila_de_espera(AVL *dados_AVL, HEAP_DINAMICA *heap);
 void dar_alta_ao_paciente(AVL *dados_AVL, HEAP_DINAMICA *heap);
 int sair(AVL *dados_AVL, HEAP_DINAMICA *heap, int contador_global);
 
@@ -59,7 +59,7 @@ int main(){
         case 2: remover_paciente(dados_AVL);                        break;
         case 3: listar_pacientes(dados_AVL);                        break;
         case 4: buscar_paciente_por_id(dados_AVL);                  break;
-        case 5: mostrar_fila_de_espera(heap);                       break;
+        case 5: mostrar_fila_de_espera(dados_AVL, heap);            break;
         case 6: dar_alta_ao_paciente(dados_AVL, heap);              break;
         case 7: rodando = sair(dados_AVL, heap, contador_global);   break;
         default: printf("Opcao invalida.");                         break;
@@ -144,7 +144,7 @@ void listar_pacientes(AVL *dados_AVL){
 
     printf("\nOpcao 3 Escolhida: Vamos visualizar os pacientes cadastrados...\n");
     
-    printf("Você deseja ver o histórico de procedimentos dos pacientes? [Y/N]");
+    printf("Voce deseja ver o historico de procedimentos dos pacientes? [Y/N]: ");
     scanf(" %c", &escolha);
 
     if(escolha == 'y' || escolha == 'Y'){
@@ -179,14 +179,14 @@ void buscar_paciente_por_id(AVL *dados_AVL){
     }
 }
 
-void mostrar_fila_de_espera(HEAP_DINAMICA *heap){
+void mostrar_fila_de_espera(AVL *dados_AVL, HEAP_DINAMICA *heap){
     printf("\nOpcao 5 Escolhida: Vamos visualizar a fila de espera...\n");
-    heap_printar(heap);
+    heap_printar(heap, dados_AVL);
     return;
 }
 
 void dar_alta_ao_paciente(AVL *dados_AVL, HEAP_DINAMICA *heap){
-    printf("\nOpcao 6 Escolhida: Vamos visualizar a fila de espera...\n");
+    printf("\nOpcao 6 Escolhida: Vamos dar alta ao paciente...\n");
 
     if(heap_vazia(heap)){
         printf("\nNao ha pacientes na fila.\n");

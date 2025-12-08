@@ -164,14 +164,14 @@ ITEM* heap_desenfileirar(HEAP_DINAMICA *heap){ //Paciente foi atendido
     return raiz;
 }
 
-void heap_printar(HEAP_DINAMICA *heap){ // cria cópia da heap para printar a remoção na ordem
+void heap_printar(HEAP_DINAMICA *heap, AVL *dados_AVL){ // cria cópia da heap para printar a remoção na ordem
     if(heap_vazia(heap)){
         printf("A fila atual se encontra vazia.\n");
         return;
     }
 
-    printf("FILA DE ESPERA ATUAL:\n");
-    printf("prioridade, ordem de chegada, paciente\n");
+    printf("\nFILA DE ESPERA ATUAL:\n");
+    printf("[prioridade | paciente]\n");
 
     HEAP_DINAMICA copia;
     copia.capacidade = heap->capacidade;
@@ -187,11 +187,14 @@ void heap_printar(HEAP_DINAMICA *heap){ // cria cópia da heap para printar a re
     while(!heap_vazia(&copia)){
         ITEM *p = heap_desenfileirar(&copia);
 
-        printf("[%d,%d] %d\n",
+        NO *paciente = avl_acha_ID(dados_AVL, p->id);
+        char *nome = paciente ? obter_copia_nome_paciente(paciente) : "Desconhecido";
+
+        printf("%d | %s\n",
             p->prioridade,
-            p->ordem_chegada,
-            p->id
+            nome
         );
+        if(paciente) destruir_copia_nome_paciente(&nome);
     }
 
     free(copia.arranjo);
