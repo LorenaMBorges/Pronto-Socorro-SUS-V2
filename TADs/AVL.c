@@ -30,6 +30,15 @@ AVL *avl_criar () {
     return arvore;
 }
 
+// Apaga todos os nós da árvore recursivamente (pós-ordem).
+void avl_apagar_rec (NO *raiz) {
+    if (raiz != NULL) {
+        avl_apagar_rec(raiz->fesq);
+        avl_apagar_rec(raiz->fdir);
+        free(raiz);
+    }
+}
+
 // Desaloca e desatribui *arvore, e chama avl_apagar_rec para apagar os nós recursivamente.
 void avl_apagar (AVL **arvore) {
     if (arvore != NULL && (*arvore) != NULL) {
@@ -39,12 +48,12 @@ void avl_apagar (AVL **arvore) {
     }
 }
 
-// Apaga todos os nós da árvore recursivamente (pós-ordem).
-void avl_apagar_rec (NO *raiz) {
-    if (raiz != NULL) {
-        avl_apagar_rec(raiz->fesq);
-        avl_apagar_rec(raiz->fdir);
-        free(raiz);
+// Devolve o campo altura de um nó, caso o nó não seja nulo. Nesse caso, devolve -1.
+int avl_altura_no (NO* no) {
+    if (no == NULL) {
+        return -1;
+    } else {
+        return no->altura;
     }
 }
 
@@ -84,6 +93,17 @@ NO *rodar_direita_esquerda (NO *a) {
     return rodar_esquerda(a);
 }
 
+// Encontra o nó com o maior ID na subárvore esquerda.
+NO *avl_encontrar_max(NO *subesquerda) {
+    NO *maior = subesquerda;
+
+    while (maior != NULL && maior->fdir != NULL) {
+        maior = maior->fdir;
+    }
+
+    return maior;
+}
+
 // Cria nó novo e devolve um ponteiro para esse nó. Só deve ser chamada quando acha-se a posição de inserção.
 NO *avl_cria_no (char *NOME, unsigned int ID) {
     NO *novo_no = (NO*) malloc(sizeof(NO));
@@ -98,11 +118,6 @@ NO *avl_cria_no (char *NOME, unsigned int ID) {
     }
 
     return novo_no;
-}
-
-// Chama recursiva que procura e insere no local correto. Devolve se a raiz é nula ou não.
-bool avl_inserir_no (AVL *arvore, char *NOME, unsigned int ID) {
-    return ((arvore->raiz = avl_inserir_rec(arvore->raiz, NOME, ID)) != NULL);
 }
 
 // De fato insere o nó, procurando recursivamente o local de inserção. Rebalanceia a AVL na volta da recursão.
@@ -139,18 +154,9 @@ NO *avl_inserir_rec (NO *raiz, char *NOME, unsigned int ID) {
     return raiz;
 }
 
-// Devolve o campo altura de um nó, caso o nó não seja nulo. Nesse caso, devolve -1.
-int avl_altura_no (NO* no) {
-    if (no == NULL) {
-        return -1;
-    } else {
-        return no->altura;
-    }
-}
-
-// Chama a função recursiva de remoção e devolve se a raiz é ou não nula.
-bool avl_remover_no (AVL *T, unsigned int ID) {
-    return((T->raiz = avl_remover_rec(T->raiz, ID)) != NULL);
+// Chama recursiva que procura e insere no local correto. Devolve se a raiz é nula ou não.
+bool avl_inserir_no (AVL *arvore, char *NOME, unsigned int ID) {
+    return ((arvore->raiz = avl_inserir_rec(arvore->raiz, NOME, ID)) != NULL);
 }
 
 // Faz a remoção de fato, corrigindo na volta da recursão qualquer desbalanceamento que tenha sido causado.
@@ -212,30 +218,40 @@ NO *avl_remover_rec (NO *raiz, unsigned int ID) {
     return raiz;
 }
 
-// Encontra o nó com o maior ID na subárvore esquerda.
-NO *avl_encontrar_max(NO *subesquerda) {
-    NO *maior = subesquerda;
-
-    while (maior != NULL && maior->fdir != NULL) {
-        maior = maior->fdir;
-    }
-
-    return maior;
+// Chama a função recursiva de remoção e devolve se a raiz é ou não nula.
+bool avl_remover_no (AVL *T, unsigned int ID) {
+    return((T->raiz = avl_remover_rec(T->raiz, ID)) != NULL);
 }
 
 // Imprime todos os nós da árvore em ordem pelos IDs.
-void avl_imprimir (AVL* arvore) {
-    if (arvore != NULL) {
-        NO* raiz = arvore->raiz;
-        if (raiz == NULL) {
-            return;
-        }
-
-        avl_imprimir(raiz->fesq);
+void avl_imprimir_2 (NO* raiz) {
+    if (raiz != NULL) {
+        avl_imprimir_2(raiz->fesq);
         printf("\nPaciente de ID %u:\n", raiz->ID);
         printf("Nome: %s\n", raiz->nome);
-        avl_imprimir(raiz->fdir);
+        avl_imprimir_2(raiz->fdir);
     }
+}
+
+// Adapta a enterada de AVL para raiz.
+void avl_imprimir(AVL* arvore) {
+    avl_imprimir_2(arvore->raiz);
+}
+
+// Procura nó de mesmo ID recursivamente. Caso encontre, devolve um ponteiro para esse nó, caso contrário, devolve NULL.
+NO* avl_acha_ID_rec (NO *raiz, unsigned int ID) {
+    if (raiz != NULL) {
+        if (raiz->ID == ID) {
+            return raiz;
+        }
+        else
+            if (raiz->ID > ID)
+                return avl_acha_ID_rec(raiz->fesq, ID);
+            if (raiz->ID < ID)
+                return avl_acha_ID_rec(raiz->fdir, ID);
+    }
+    else
+        return NULL;
 }
 
 // Devolve se um ID está disponível para uso. Caso ele já exista, não está, caso contrário, pode ser adotado, estão está disponível.
@@ -250,22 +266,6 @@ NO* avl_acha_ID (AVL *arvore, unsigned int ID) {
         return(avl_acha_ID_rec(arvore->raiz, ID));
     
     return NULL;
-}
-
-// Procura nó de mesmo ID recursivamente. Caso encontre, devolve um ponteiro para esse nó, caso contrário, devolve NULL.
-NO* avl_acha_ID_rec (NO *raiz, unsigned int ID) {
-    if (raiz != NULL) {
-        if (raiz->ID == ID) {
-            return raiz;
-        }
-        else
-            if (raiz->ID > ID)
-                return avl_acha_ID(raiz->fesq, ID);
-            if (raiz->ID < ID)
-                return avl_acha_ID(raiz->fdir, ID);
-    }
-    else
-        return NULL;
 }
 
 // Cria e devolve cópia do nome do paciente correspodente a aquele nó.
