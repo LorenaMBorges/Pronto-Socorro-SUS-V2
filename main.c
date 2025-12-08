@@ -109,9 +109,9 @@ void listar_pacientes(AVL *dados_AVL){
     printf("\nOpção 3 Escolhida: Vamos visualizar os pacientes cadastrados...\n");
     
     printf("Você deseja ver o histórico de procedimentos dos pacientes? [Y/N]");
-    scanf("%c", &escolha);
+    scanf("%c", escolha);
 
-    if(escolha == "y" || escolha == "Y"){
+    if(escolha == 'y' || escolha == 'Y'){
         //impressao da estrutura de dados + procedimentos
     }else{
         avl_imprimir(dados_AVL);
@@ -133,10 +133,10 @@ void buscar_paciente_por_id(AVL *dados_AVL){
     if (paciente != NULL) {
         printf("\nPaciente encontrado:\nNome: ");
 
-        char nome[TAM_NOME] = obter_copia_nome_paciente(paciente);
+        char *nome = obter_copia_nome_paciente(paciente);
         printf("%s\n", nome);
 
-        destruir_copia_nome_paciente(nome);
+        destruir_copia_nome_paciente(&nome);
     }
     else{
         printf("\nPaciente com ID %d nao encontrado.\n", id);
