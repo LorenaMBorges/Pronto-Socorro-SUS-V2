@@ -20,4 +20,5 @@ NO* avl_acha_ID (AVL *arvore, unsigned int ID);
 char *obter_copia_nome_paciente (NO* no);
 void destruir_copia_nome_paciente (char **copia);
 
+void avl_set_esta_na_fila(NO *paciente, bool estado);
 bool avl_obter_esta_na_fila_no(NO* no);

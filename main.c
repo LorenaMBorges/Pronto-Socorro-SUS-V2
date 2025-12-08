@@ -70,12 +70,12 @@ void registrar_paciente(AVL *dados_AVL, HEAP_DINAMICA *heap){
     printf("Digite a prioridade (1-5): ");
     scanf("%u", &prioridade);
     
-    // precisa adicionar paciente na AVL
+    // precisa adicionar paciente na AVL + verificação se o paciente já existe
     
     ITEM *item = item_criar(id, prioridade, contador_global++);
 
-    //registrar que o paciente entrou na fila
-    heap_enfileirar(heap, item);
+    heap_enfileirar(heap, item);    
+    avl_set_esta_na_fila(avl_acha_ID(dados_AVL, id), true);
 
     return;
 }
@@ -158,10 +158,11 @@ void dar_alta_ao_paciente(AVL *dados_AVL, HEAP_DINAMICA *heap){
     }
     
     ITEM *item_removido = heap_desenfileirar(heap);
-    //registrar que o paciente saiu da fila
 
     int id = heap_item_get_id(item_removido);
     NO *paciente = avl_acha_ID(dados_AVL, id);
+
+    avl_set_esta_na_fila(paciente, false);
 
     printf("\nPaciente atendido:\n");
     if(paciente != NULL){
