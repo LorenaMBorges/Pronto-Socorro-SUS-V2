@@ -22,10 +22,11 @@ void listar_pacientes(AVL *dados_AVL);
 void buscar_paciente_por_id(AVL *dados_AVL);
 void mostrar_fila_de_espera(HEAP_DINAMICA *heap);
 void dar_alta_ao_paciente(AVL *dados_AVL, HEAP_DINAMICA *heap);
-void sair();
+int sair(int rodando);
 
 int main(){
-    int escolha_menu;
+    int escolha_menu; 
+    int rodando = 1;
     HEAP_DINAMICA *heap = heap_criar();
     // precisa carregar os dados. Acho que seria interessante a fila vir dos dados também, e não criar uma fila nova.
     // chamei o ponteiro para a AVL de dados_AVL:
@@ -33,7 +34,7 @@ int main(){
 
     printf("\nBem vindo Sistema do SUS!\n");
 
-    while(true){
+    while(rodando){
         printf("\nPor favor escolha entre as seguintes opcoes:\n");
         printf("[1] Registrar paciente\n");
         printf("[2] Remover paciente\n");
@@ -53,7 +54,7 @@ int main(){
         case 4: buscar_paciente_por_id(dados_AVL);      break;
         case 5: mostrar_fila_de_espera(heap);           break;
         case 6: dar_alta_ao_paciente(dados_AVL, heap);  break;
-        case 7: sair();                                 break;
+        case 7: rodando = sair(rodando);                break;
         default: break;
         }
     }
@@ -62,7 +63,7 @@ int main(){
 void registrar_paciente(AVL *dados_AVL, HEAP_DINAMICA *heap){
     unsigned int id, prioridade;
 
-    printf("\nOpção 1 Escolhida: Vamos registrar um paciente...\n");
+    printf("\nOpcao 1 Escolhida: Vamos registrar um paciente...\n");
     
     printf("Digite o ID: ");
     scanf("%u", &id);
@@ -70,16 +71,16 @@ void registrar_paciente(AVL *dados_AVL, HEAP_DINAMICA *heap){
     printf("Digite a prioridade (1-5): ");
     scanf("%u", &prioridade);
     
-    // precisa adicionar paciente na AVL + verificação se o paciente já existe
+    // precisa adicionar paciente na AVL + verificação se o paciente ja existe
 
-    if(!avl_obter_esta_na_fila_no){
+    if(avl_obter_esta_na_fila_no){
         ITEM *item = item_criar(id, prioridade, contador_global++);
         heap_enfileirar(heap, item);
         avl_set_esta_na_fila(avl_acha_ID(dados_AVL, id), true);
 
         printf("\nPaciente adicionado na fila com sucesso!\n");
     }else{
-        printf("\nPaciente já está na fila!\n");
+        printf("\nPaciente ja esta na fila!\n");
     }
 
     return;
@@ -88,7 +89,7 @@ void registrar_paciente(AVL *dados_AVL, HEAP_DINAMICA *heap){
 void remover_paciente(AVL *dados_AVL){
     unsigned int id;
     
-    printf("\nOpção 2 Escolhida: Vamos remover um paciente dos registros...\n");
+    printf("\nOpcao 2 Escolhida: Vamos remover um paciente dos registros...\n");
 
     printf("Digite o ID: ");
     scanf("%u", &id);
@@ -111,7 +112,7 @@ void remover_paciente(AVL *dados_AVL){
 void listar_pacientes(AVL *dados_AVL){
     char escolha;
 
-    printf("\nOpção 3 Escolhida: Vamos visualizar os pacientes cadastrados...\n");
+    printf("\nOpcao 3 Escolhida: Vamos visualizar os pacientes cadastrados...\n");
     
     printf("Você deseja ver o histórico de procedimentos dos pacientes? [Y/N]");
     scanf(" %c", &escolha);
@@ -128,7 +129,7 @@ void listar_pacientes(AVL *dados_AVL){
 void buscar_paciente_por_id(AVL *dados_AVL){
     unsigned int id;
 
-    printf("\nOpção 4 Escolhida: Vamos buscar um paciente pelo ID...\n");
+    printf("\nOpcao 4 Escolhida: Vamos buscar um paciente pelo ID...\n");
 
     printf("Digite o ID: ");
     scanf("%u", &id);
@@ -149,13 +150,13 @@ void buscar_paciente_por_id(AVL *dados_AVL){
 }
 
 void mostrar_fila_de_espera(HEAP_DINAMICA *heap){
-    printf("\nOpção 5 Escolhida: Vamos visualizar a fila de espera...\n");
+    printf("\nOpcao 5 Escolhida: Vamos visualizar a fila de espera...\n");
     heap_printar(heap);
     return;
 }
 
 void dar_alta_ao_paciente(AVL *dados_AVL, HEAP_DINAMICA *heap){
-    printf("\nOpção 6 Escolhida: Vamos visualizar a fila de espera...\n");
+    printf("\nOpcao 6 Escolhida: Vamos visualizar a fila de espera...\n");
 
     if(heap_vazia(heap)){
         printf("\nNao ha pacientes na fila.\n");
@@ -187,7 +188,8 @@ void dar_alta_ao_paciente(AVL *dados_AVL, HEAP_DINAMICA *heap){
     return;
 }
 
-void sair(){
+int sair(int rodando){
     printf("\nSistema fechando...\n");
-    return;
+    rodando = 0;
+    return rodando;
 }
