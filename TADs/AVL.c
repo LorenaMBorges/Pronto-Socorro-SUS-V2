@@ -288,8 +288,8 @@ NO* avl_acha_ID_rec (NO *raiz, unsigned int ID) {
 }
 
 // Devolve se um ID está disponível para uso. Caso ele já exista, não está, caso contrário, pode ser adotado, estão está disponível.
-bool avl_ID_disponivel (NO *raiz, unsigned int ID) {
-    return ((avl_acha_ID_rec(raiz, ID)) == NULL);
+bool avl_ID_disponivel (AVL *arvore, unsigned int ID) {
+    return ((avl_acha_ID_rec(arvore->raiz, ID)) == NULL);
 }
 
 // Chama função de busca.
