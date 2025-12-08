@@ -77,6 +77,10 @@ void registrar_paciente(AVL *dados_AVL, HEAP_DINAMICA *heap){
 
         if(avl_inserir_no(dados_AVL, nome, id))
             printf("\n\nPaciente inserido no registro.\n");
+        else {
+            printf("\n\nErro de registro do paciente. Tente novamente.\n");
+            return;
+        }
     }
     else {
         printf("\nID ja utilizado, paciente ja registrado.\n");
