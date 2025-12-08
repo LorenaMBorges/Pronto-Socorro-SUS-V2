@@ -23,17 +23,23 @@ void listar_pacientes(AVL *dados_AVL);
 void buscar_paciente_por_id(AVL *dados_AVL);
 void mostrar_fila_de_espera(HEAP_DINAMICA *heap);
 void dar_alta_ao_paciente(AVL *dados_AVL, HEAP_DINAMICA *heap);
-int sair(void);
+int sair(AVL *dados_AVL, HEAP_DINAMICA *heap, int contador_global);
 
 int main(){
     int escolha_menu; 
     int rodando = 1;
-    HEAP_DINAMICA *heap = heap_criar();
-    // precisa carregar os dados. Acho que seria interessante a fila vir dos dados também, e nao criar uma fila nova.
-    // chamei o ponteiro para a AVL de dados_AVL:
-    AVL *dados_AVL = avl_criar();
+
+    AVL *dados_AVL = NULL;
+    HEAP_DINAMICA *heap = NULL;
 
     printf("\nBem vindo Sistema do SUS!\n");
+
+    if (!LOAD(&dados_AVL, &heap, &contador_global)) {
+        printf("Falha ao carregar dados. Criando estruturas vazias...\n");
+        dados_AVL = avl_criar();
+        heap = heap_criar();
+        contador_global = 0;
+    }
 
     while(rodando){
         printf("\nPor favor escolha entre as seguintes opcoes:\n");
@@ -49,16 +55,21 @@ int main(){
         scanf("%d", &escolha_menu);
 
         switch (escolha_menu) {
-        case 1: registrar_paciente(dados_AVL, heap);    break;
-        case 2: remover_paciente(dados_AVL);            break;
-        case 3: listar_pacientes(dados_AVL);            break;
-        case 4: buscar_paciente_por_id(dados_AVL);      break;
-        case 5: mostrar_fila_de_espera(heap);           break;
-        case 6: dar_alta_ao_paciente(dados_AVL, heap);  break;
-        case 7: rodando = sair();                       break;
-        default: break;
+        case 1: registrar_paciente(dados_AVL, heap);                break;
+        case 2: remover_paciente(dados_AVL);                        break;
+        case 3: listar_pacientes(dados_AVL);                        break;
+        case 4: buscar_paciente_por_id(dados_AVL);                  break;
+        case 5: mostrar_fila_de_espera(heap);                       break;
+        case 6: dar_alta_ao_paciente(dados_AVL, heap);              break;
+        case 7: rodando = sair(dados_AVL, heap, contador_global);   break;
+        default: printf("Opcao invalida.");                         break;
         }
     }
+
+    avl_apagar(&dados_AVL);
+    heap_apagar(&heap);
+
+    return 0;
 }
 
 void registrar_paciente(AVL *dados_AVL, HEAP_DINAMICA *heap){
@@ -207,7 +218,12 @@ void dar_alta_ao_paciente(AVL *dados_AVL, HEAP_DINAMICA *heap){
     return;
 }
 
-int sair(void){
+int sair(AVL *dados_AVL, HEAP_DINAMICA *heap, int contador_global){
     printf("\nSistema fechando...\n");
+
+    if (!SAVE(dados_AVL, heap, contador_global)) {
+        printf("Erro ao salvar dados no arquivo.\n");
+    }
+
     return 0;
 }
