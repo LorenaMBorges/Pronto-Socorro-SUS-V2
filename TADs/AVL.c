@@ -328,12 +328,14 @@ void destruir_copia_nome_paciente (char **copia) {
     }
 }
 
+// Atualiza o estado do paciente indicando se ele está ou não na fila de espera.
 void avl_set_esta_na_fila(NO *paciente, bool estado){
     if(paciente != NULL){
         paciente->esta_na_fila = estado;
     }
 }
 
+// Devolve se o paciente está ou não na fila.
 bool avl_obter_esta_na_fila_no(NO* no){
     if(no != NULL){
         return no->esta_na_fila;
@@ -341,6 +343,7 @@ bool avl_obter_esta_na_fila_no(NO* no){
     return false;
 }
 
+// Cria um novo procedimento com a descrição fornecida e o insere no histórico do paciente especificado.
 bool avl_registrar_procedimento(NO *paciente, const char *descricao){
     if(paciente == NULL || descricao == NULL) return false;
 
@@ -350,6 +353,7 @@ bool avl_registrar_procedimento(NO *paciente, const char *descricao){
     return inserir_procedimento(paciente->historico, p);
 }
 
+// Exibe o histórico de procedimentos de um paciente específico, caso ele exista.
 void avl_imprimir_historico(NO *paciente){
     if(paciente == NULL){
         printf("Paciente inexistente.\n");
@@ -358,6 +362,7 @@ void avl_imprimir_historico(NO *paciente){
     historico_consultar(paciente->historico);
 }
 
+// Função recursiva para percorrer a árvore em ordem e executar uma função de callback em cada nó.
 static void percurso_em_ordem_rec(NO *no, void (*callback)(NO*, void*), void *ctx) {
     if (no == NULL) return;
     percurso_em_ordem_rec(no->fesq, callback, ctx);
@@ -365,26 +370,30 @@ static void percurso_em_ordem_rec(NO *no, void (*callback)(NO*, void*), void *ct
     percurso_em_ordem_rec(no->fdir, callback, ctx);
 }
 
+// Chama a recursiva para percorrer em ordem para callback.
 void avl_percorrer_em_ordem(AVL *arvore, void (*callback)(NO*, void*), void *ctx) {
     if (arvore == NULL || callback == NULL) return;
     percurso_em_ordem_rec(arvore->raiz, callback, ctx);
 }
 
+// Recursivamente conta o número de nós de uma árvore.
 static int avl_contar_nos_rec(NO *no) {
     if (no == NULL) return 0;
     return 1 + avl_contar_nos_rec(no->fesq) + avl_contar_nos_rec(no->fdir);
 }
 
+// Chama função de contagem recursiva.
 int avl_contar_nos(AVL *arvore) {
     if (arvore == NULL) return 0;
     return avl_contar_nos_rec(arvore->raiz);
 }
 
+// Obtém ID de um nó.
 unsigned int avl_obter_ID_no(NO *no) {
     return no ? no->ID : 0;
 }
 
+// Obtém histórico de um nó.
 HISTORICO* avl_obter_historico_no(NO *no) {
     return no ? no->historico : NULL;
 }
-
