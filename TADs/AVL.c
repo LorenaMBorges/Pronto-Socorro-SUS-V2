@@ -115,6 +115,10 @@ NO *avl_cria_no (char *NOME, unsigned int ID) {
 
     if (novo_no != NULL) {
         novo_no->historico = historico_criar();
+        if (novo_no->historico == NULL) { // se a segunda alocação falhar, tudo é desfeito
+            free(novo_no);
+            return NULL;
+        }
         novo_no->altura = 0;
         novo_no->fdir = NULL;
         novo_no->fesq = NULL;
@@ -305,7 +309,10 @@ NO* avl_acha_ID (AVL *arvore, unsigned int ID) {
 char *obter_copia_nome_paciente (NO* no) {
     if (no != NULL) {
         char* copia = (char*) malloc(sizeof(char)*TAM_NOME);
-        strcpy(copia, no->nome);
+        
+        if (copia != NULL) { // verificando malloc
+            strcpy(copia, no->nome);
+        }
 
         return copia;
     }

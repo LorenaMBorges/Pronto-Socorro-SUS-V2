@@ -13,13 +13,18 @@ struct heap_dinamica{ //arranjo para implementação, seu tamanho real e capacid
     int capacidade;
 };
 
-HEAP_DINAMICA *heap_criar(){ //Heap mínima: nó >= pai(nó)
+HEAP_DINAMICA *heap_criar(){ //Heap mínima: nó filho >= nó pai
     HEAP_DINAMICA *heap = (HEAP_DINAMICA*) malloc(sizeof(HEAP_DINAMICA));
     if(heap != NULL){
         heap->capacidade = 32; //tamanho inicial fixa
         heap->tamanho = 0;
         heap->arranjo = malloc(heap->capacidade * sizeof(ITEM*));
+        if (heap->arranjo == NULL) { // se o segundo malloc falhar, desfaz tudo
+                free(heap);
+                return NULL; 
+        }
     }
+
     return heap;
 }
 
