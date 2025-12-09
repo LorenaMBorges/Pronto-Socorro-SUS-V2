@@ -8,6 +8,7 @@
 #include "historico.h"
 #include "filaPrioridade.h"
 
+// Função auxiliar do SAVE
 static bool salvar_string(FILE* arquivo, const char* texto) {
     int tamanho = 0;
     if (texto != NULL) {
@@ -25,6 +26,7 @@ static bool salvar_string(FILE* arquivo, const char* texto) {
     return true;
 }
 
+// Função auxiliar do LOAD
 static bool carregar_string(FILE* arquivo, char** texto) {
     int tamanho = 0;
     if (fread(&tamanho, sizeof(int), 1, arquivo) != 1) {
@@ -111,6 +113,8 @@ static void salvar_no_callback(NO *no, void *ctx_void) {
     }
 }
 
+// SAVE: 
+//  Escreve - qtd pacientes, pacientes, Heap, contagor_global
 bool SAVE(AVL *dados_AVL, HEAP_DINAMICA *heap, int contador_global) {
     FILE* arquivo = fopen("hospital_data.bin", "wb");
     if (arquivo == NULL) {
@@ -195,6 +199,8 @@ bool SAVE(AVL *dados_AVL, HEAP_DINAMICA *heap, int contador_global) {
     return true;
 }
 
+// LOAD:
+//  Leitura - Reconstrói AVL, Heap, contador_global
 bool LOAD(AVL **dados_AVL, HEAP_DINAMICA **heap, int *contador_global) {
     if (dados_AVL == NULL || heap == NULL || contador_global == NULL) {
         return false;

@@ -1,3 +1,10 @@
+# Como executar o projeto:
+- Clonar o repositório em sua máquina local 
+(git clone https://github.com/LorenaMBorges/Pronto-Socorro-SUS-V2.git)
+- Compilar o código. Utilize o comando a seguir:
+gcc main.c TADs/AVL.c TADs/filaPrioridade.c TADs/historico.c TADs/IO.c -o sus
+- Executar arquivo sus.exe
+
 # Especificações Técnicas: 
 - É necessário que inserções, alterações e buscas no cadastro de acidentados atendidos sejam muito eficientes
 - Não é aceito operações lineares
@@ -39,7 +46,18 @@
 - Mostrar fila: Listar paciente da maior para a menor prioridade
 - Dar alta ao paciente: O paciente foi atendido e deixou o serviço de emergência. Ele permanece nos registros do hospital.
 
-## TAD | Persistência dos Dados (IO - Input/Output)
-- Ao sair do sistema, tudo deve ser armazenado uma única vez (lista de paciente, a fila de pacientes e os históricos de atendimento)
-- Ao entrar no sistema, tudo deve ser recarregado
-- Cada TAD além desse deve ter funções utilitárias do tipo save() e load()
+### TAD | Persistência dos Dados (IO - Input/Output)
+
+TAD IO responsável por **persistir todo o estado do sistema** (pacientes, fila de espera e contador de chegada) em um **arquivo binário único**. A ideia é que o sistema possa ser encerrado e, ao ser aberto novamente, retome exatamente do ponto em que parou, sem necessidade de recadastrar informações manualmente.
+
+- Arquivo único binário: concentra todos os dados (AVL + Heap + contador_global), facilitando o gerenciamento e reduzindo risco de inconsistências;
+- Persistência transparente: ao iniciar o programa, os dados são carregados automaticamente; ao sair, todo o estado é salvo sem exigir ações extras do usuário;
+- Integração com os TADs: a AVL continua responsável pelos pacientes e o histórico, a Heap pela fila de prioridade, e o IO apenas organiza a gravação/leitura chamando as funções públicas de cada TAD, sem violar encapsulamento;
+- Histórico de procedimentos: cada paciente tem seu histórico gravado junto com seus dados, permitindo que atendimentos anteriores sejam consultados em execuções futuras;
+- Uso de callbacks: o percurso da AVL é genérico, e o IO passa uma função callback para salvar cada nó, mantendo o código reutilizável e modular;
+
+#### Operações no IO:
+
+* **LOAD**: Ao iniciar o sistema, lê o arquivo binário (se existir), reconstrói a AVL com todos os pacientes e seus históricos, remonta a Heap com a fila de espera e restaura o `contador_global`;
+* **SAVE**: Ao encerrar o sistema, percorre a AVL e a Heap, salvando todos os dados atuais no arquivo, incluindo o histórico de procedimentos e a ordem de chegada;
+* **Manutenção do histórico**: Sempre que um procedimento é registrado para um paciente (por exemplo, na alta), o IO garante que esse histórico será preservado entre as execuções por meio do SAVE/LOAD.

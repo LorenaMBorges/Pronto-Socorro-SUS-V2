@@ -173,6 +173,9 @@ void buscar_paciente_por_id(AVL *dados_AVL){
         printf("%s\n", nome);
 
         destruir_copia_nome_paciente(&nome);
+        
+        printf("Historico de procedimentos:\n");
+        avl_imprimir_historico(paciente);
     }
     else{
         printf("\nPaciente com ID %d nao encontrado.\n", id);
