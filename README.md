@@ -29,10 +29,15 @@ gcc main.c TADs/AVL.c TADs/filaPrioridade.c TADs/historico.c TADs/IO.c -o sus
     7. Sair
 
 # Tipos Abstratos de Dados
-## TAD | Paciente (AVL)
+## TAD | Paciente (árvore binária de busca AVL)
+A árvore binária de busca AVL foi escolhida para a implementação porque, como o desempenho era uma prioridade, não seria interessante usar uma ABB simples, pelo dificuldade de mantê-la balanceada ou completamente cheia. Em relação a rubro-negra, concluímos pós-análise que essa abordagem foi mais interessante pela rubro-negra poder ter um maior custo de busca em relação a AVL, sendo que a grande maioria das operações dependem da busca, e, ao longo do uso, a vantagem da rubro-negra, que é sua maior flexibilidade, não faria tanta diferença, pois a maior parte das pessoas já estariam cadastradas no sistema, e a busca ser muito mais frequente.
+- A árvore é organizada pelo ID
+- A implementação é encadeada dinamicamente
+- Os nós da AVL representam tanto um paciente quanto a sua função como nó na árvore
+- Quando um nó de dois filhos precisa ser substituído, a abordagem é escolher o maior nó descendente da esquerda
 ### Tipo de dado Paciente:
-- Nome: tipo string
-- Id (chave única de identificação): único, tipo int (string não é interessante, vamos ter que tratar nomes repetidos)
+- Nome: tipo string de tamanho definido por define
+- Id (chave única de identificação): único, tipo unsigned int (string não é interessante, vamos ter que tratar nomes repetidos, e não pode haveer IDs negativos, logo essa abordagem permite uma faixa maior de entradas para um mesmo número de bits)
 
 ### Operações com paciente:
 - Registrar: Caso seja a primeira ocorrência
