@@ -33,7 +33,13 @@
 - Listar: Mostrar todos os pacientes no hospital
 - Buscar paciente por ID
 
-## TAD | Fila de Prioridade (Heap)
+## TAD | Fila de Prioridade
+Nós escolhemos implementar a fila com ordem de prioridade através de uma Heap mínima sobre um Arranjo dinâmico. Tivemos um dilema ao pensar nessa implementação para equilibrar a economia de memória, eficiência computacional e tempo de resposta rápido, mas acreditamos que com as seguintes características conseguimos equilibrar:
+- Com desempate de ordem de chegada quando as prioridades empatam;
+- Sem operações lineares: encontrar/remover o elemento de maior prioridade com heap é O(log n);
+- Arranjo dinâmico: O volume de pacientes é variável (picos de atendimento), usar vetor estático desperdiçaria memória. O uso de realloc com crescimento exponencial permite adaptação eficiente;
+- Uso da struct ITEM em vez do nó NO: a heap armazena somente os dados necessários para priorização, evitando duplicar todo o conteúdo do paciente na fila e mantendo a separação entre as estruturas;
+- Heap mínima: foi escolhida porque a menor chave representa a maior prioridade de atendimento, permitindo acesso direto ao próximo paciente a ser chamado na raiz da estrutura.
 ### Operações na fila:
 - Colocar na fila: Verificação de cadastro prévio
 - Mostrar fila: Listar paciente da maior para a menor prioridade

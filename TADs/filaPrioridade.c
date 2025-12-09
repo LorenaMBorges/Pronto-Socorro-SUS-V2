@@ -16,7 +16,7 @@ struct heap_dinamica{ //arranjo para implementação, seu tamanho real e capacid
 HEAP_DINAMICA *heap_criar(){ //Heap mínima: nó >= pai(nó)
     HEAP_DINAMICA *heap = (HEAP_DINAMICA*) malloc(sizeof(HEAP_DINAMICA));
     if(heap != NULL){
-        heap->capacidade = 32;
+        heap->capacidade = 32; //tamanho inicial fixa
         heap->tamanho = 0;
         heap->arranjo = malloc(heap->capacidade * sizeof(ITEM*));
     }
@@ -71,7 +71,7 @@ void heap_swap(HEAP_DINAMICA *heap, int i, int j){
     heap->arranjo[j] = tmp;
 }
 
-void heap_fix_up(HEAP_DINAMICA *heap){ //A chave para manter a ordem será ITEM->prioridade
+void heap_fix_up(HEAP_DINAMICA *heap){ //A chave para manter a ordem será ITEM->prioridade (heap mínima)
     int i = heap->tamanho - 1;
 
     while(i > 0){
@@ -83,7 +83,7 @@ void heap_fix_up(HEAP_DINAMICA *heap){ //A chave para manter a ordem será ITEM-
         if( //regra de prioridade para heap mínima
             filho->prioridade < no_pai->prioridade || 
             (filho->prioridade == no_pai->prioridade &&
-            filho->ordem_chegada < no_pai->ordem_chegada)
+            filho->ordem_chegada < no_pai->ordem_chegada) //ordem de chegada como desempate
         ){
             //troca
             heap_swap(heap, i, pai);
