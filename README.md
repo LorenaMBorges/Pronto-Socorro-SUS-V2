@@ -52,7 +52,7 @@ Nós escolhemos implementar a fila com ordem de prioridade através de uma Heap 
 - Mostrar fila: Listar paciente da maior para a menor prioridade
 - Dar alta ao paciente: O paciente foi atendido e deixou o serviço de emergência. Ele permanece nos registros do hospital.
 
-### TAD | Persistência dos Dados (IO - Input/Output)
+## TAD | Persistência dos Dados (IO - Input/Output)
 
 TAD IO responsável por **persistir todo o estado do sistema** (pacientes, fila de espera e contador de chegada) em um **arquivo binário único**. A ideia é que o sistema possa ser encerrado e, ao ser aberto novamente, retome exatamente do ponto em que parou, sem necessidade de recadastrar informações manualmente.
 
@@ -62,7 +62,7 @@ TAD IO responsável por **persistir todo o estado do sistema** (pacientes, fila 
 - Histórico de procedimentos: cada paciente tem seu histórico gravado junto com seus dados, permitindo que atendimentos anteriores sejam consultados em execuções futuras;
 - Uso de callbacks: o percurso da AVL é genérico, e o IO passa uma função callback para salvar cada nó, mantendo o código reutilizável e modular;
 
-#### Operações no IO:
+### Operações no IO:
 
 * **LOAD**: Ao iniciar o sistema, lê o arquivo binário (se existir), reconstrói a AVL com todos os pacientes e seus históricos, remonta a Heap com a fila de espera e restaura o `contador_global`;
 * **SAVE**: Ao encerrar o sistema, percorre a AVL e a Heap, salvando todos os dados atuais no arquivo, incluindo o histórico de procedimentos e a ordem de chegada;
