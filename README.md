@@ -1,3 +1,8 @@
+# Alunos:
+- João Pedro Boaretto
+- Lorena Moreira Borges
+- Sofia Albuquerque Lima
+
 # Como executar o projeto:
 - Clonar o repositório em sua máquina local 
 (git clone https://github.com/LorenaMBorges/Pronto-Socorro-SUS-V2.git)
